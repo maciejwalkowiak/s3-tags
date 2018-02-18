@@ -1,0 +1,18 @@
+{
+  "name": "s3tags",
+  "version": "0.0.1",
+  "description": "Simple utility to find tagged/untagged resources",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maciej Walkowiak",
+  "license": "MIT",
+  "bin": {
+    "s3tags": "./index.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.197.0",
+    "minimist": "^1.2.0"
+  }
+}
