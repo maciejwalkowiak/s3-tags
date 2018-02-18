@@ -12,12 +12,25 @@ const filter = {
 
 const details = argv['details'] !== undefined;
 
+class Bucket {
+  constructor(name, tags) {
+    this.name = name;
+    this.tags = tags;
+  }
+
+  tagNames() {
+    return this.tags.map(t => t.Key);
+  }
+
+  hasTag(tag) {
+    return this.tagNames().includes(tag);
+  }
+}
+
 s3
   .listBuckets()
   .promise()
-  .then(data =>
-    data["Buckets"].map(d => d.Name).map(name => ({ Bucket: name }))
-  )
+  .then(data => data["Buckets"].map(bucket => ({ Bucket: bucket.Name })))
   .then(requests =>
     Promise.all(
       requests.map(req =>   
@@ -25,23 +38,23 @@ s3
           .getBucketTagging(req)
           .promise()
           .then(res => Promise.resolve(res.TagSet))
-          .then(tags => ({ bucket: req.Bucket, tags: tags}))
-          .catch(e => Promise.resolve(({ bucket: req.Bucket, tags: []})))
+          .then(tags => new Bucket(req.Bucket, tags))
+          .catch(e => Promise.resolve(new Bucket(req.Bucket, [])))
       )
     )
   )
   .then(items => items.filter(item => {
     if (filter.tagged) {
-      return item.tags.map(t => t.Key).includes(filter.tag);
+      return item.hasTag(filter.tag);
     } else {
-      return !item.tags.map(t => t.Key).includes(filter.tag);
+      return !item.hasTag(filter.tag);
     }
   }))
   .then(items => {
     if (details) {
       console.dir(items, { depth: null })
     } else {
-      console.dir(items.map(item => item.bucket))
+      console.dir(items.map(item => item.name))
     }
   })
   .catch(e => console.error(e));
