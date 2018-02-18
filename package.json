@@ -1,5 +1,5 @@
 {
-  "name": "s3tags",
+  "name": "s3-tags",
   "version": "0.0.1",
   "description": "Simple utility to find tagged/untagged resources",
   "main": "index.js",
@@ -9,7 +9,7 @@
   "author": "Maciej Walkowiak",
   "license": "MIT",
   "bin": {
-    "s3tags": "./index.js"
+    "s3-tags": "./index.js"
   },
   "dependencies": {
     "aws-sdk": "^2.197.0",
