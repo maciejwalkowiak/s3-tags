@@ -29,6 +29,10 @@ class Bucket {
   }
 }
 
+function prettyPrint(obj) {
+  console.log(util.inspect(obj, { showHidden: false, depth: null, colors: true }))
+}
+
 s3
   .listBuckets()
   .promise()
@@ -60,7 +64,3 @@ s3
     }
   })
   .catch(e => console.error(e));
-
-  function prettyPrint(obj) {
-    console.log(util.inspect(obj, { showHidden: false, depth: null, colors: true }))
-  }
