@@ -3,8 +3,10 @@
 const minimist = require('minimist');
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3({ apiVersion: "2006-03-01" });
+const util = require('util');
 
 const argv = minimist(process.argv.slice(2));
+
 const filter = {
   tag: argv['tag'],
   tagged: argv['not-tagged'] === undefined
@@ -52,9 +54,13 @@ s3
   }))
   .then(items => {
     if (details) {
-      console.dir(items, { depth: null })
+      prettyPrint(items);
     } else {
-      console.dir(items.map(item => item.name))
+      prettyPrint(items.map(item => item.name))
     }
   })
   .catch(e => console.error(e));
+
+  function prettyPrint(obj) {
+    console.log(util.inspect(obj, { showHidden: false, depth: null, colors: true }))
+  }
