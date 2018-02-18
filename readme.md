@@ -2,6 +2,12 @@
 
 Simple utility to find tagged and untagged S3 buckets.
 
+## How to install
+
+```
+npm install -g s3-tags
+```
+
 ## Usage
 
 List all buckets tagged with `aws:cloudformation:stack-name`:
